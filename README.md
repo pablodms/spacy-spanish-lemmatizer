@@ -3,10 +3,10 @@ Spanish rule-based lemmatization for spaCy
 
 ## Steps to use lemmatizer
 * Install package via pip
-`pip install spacy_spanish_lemmatizer`
+```pip install spacy_spanish_lemmatizer```
 * Generate lemmatization rules (it may take several minutes):
 __NOTE__: currently, only lemmatization based on Wiktionary dump files is implemented. Due to licensing restrictions, the following command will download Wiktionary dump files and generate lemmatization rules based on them. By executing it, you are agreeing Wikimedia [License](https://dumps.wikimedia.org/legal.html).
-`python -m spacy_spanish_lemmatizer download wiki`
+```python -m spacy_spanish_lemmatizer download wiki```
 
 * Use it in Python:
 ```

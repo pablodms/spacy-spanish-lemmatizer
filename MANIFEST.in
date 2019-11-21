@@ -1,0 +1,4 @@
+graft spacy_spanish_lemmatizer/common 
+
+include spacy_spanish_lemmatizer/tmp/.gitignore
+include spacy_spanish_lemmatizer/data/.gitignore

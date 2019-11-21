@@ -19,9 +19,10 @@ class BaseParser:
 
     def _clean_directory(self, directory):
         for file in os.listdir(directory):
-            path = os.path.join(directory, file)
-            if os.path.isfile(path):
-                os.unlink(path)
+            if not file.startswith('.'):
+                path = os.path.join(directory, file)
+                if os.path.isfile(path):
+                    os.unlink(path)
 
     def clean(self):
         sys.stdout.write("Cleaning temporary files...")

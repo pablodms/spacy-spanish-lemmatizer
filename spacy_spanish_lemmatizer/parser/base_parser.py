@@ -25,7 +25,7 @@ class BaseParser:
                     os.unlink(path)
 
     def clean(self):
-        sys.stdout.write("Cleaning temporary files...")
+        sys.stdout.write("Cleaning temporary files...\n")
         self._clean_directory(Config.TEMP_FOLDER)
 
     def download(self):
@@ -40,5 +40,5 @@ class BaseParser:
         self.clean()
 
     def reset(self):
-        sys.stdout.write("Cleaning data...")
+        sys.stdout.write("Cleaning data...\n")
         self._clean_directory(Config.DATA_FOLDER)

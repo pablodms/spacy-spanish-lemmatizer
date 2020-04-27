@@ -83,12 +83,12 @@ class WikiParser(BaseParser):
         sys.stdout.write(
             "Downloading wiktionary dump from: "
             + self.DUMP_URL
-            + " (it may take some time)"
+            + " (it may take some time)\n"
         )
         urllib.request.urlretrieve(self.DUMP_URL, self.COMPRESSED_LEMMA)
 
     def __decompress_source(self):
-        sys.stdout.write("Decompressing dump file: " + self.COMPRESSED_LEMMA)
+        sys.stdout.write("Decompressing dump file: " + self.COMPRESSED_LEMMA + "\n")
         with open(self.OUTPUT_LEMMA, "wb") as new_file, bz2.BZ2File(
             self.COMPRESSED_LEMMA, "rb"
         ) as file:
@@ -128,7 +128,7 @@ class WikiParser(BaseParser):
     """
 
     def __generate_lemmatization(self):
-        sys.stdout.write("Generating lemmatization...")
+        sys.stdout.write("Generating lemmatization...\n")
         is_valid_word_regex = re.compile(r"^[\w-]+$")
         # Allow dashes and alpha chars in words
         for key, values in self.__results.items():
@@ -205,23 +205,26 @@ class WikiParser(BaseParser):
         self.__remove_covered_entries()
 
     def __parse_source(self):
-        sys.stdout.write("Parsing downloaded file...")
+        sys.stdout.write("Parsing downloaded file...\n")
         namespace_regex = re.compile(r"\{[^}]+\}")
-        tree = ET.parse(self.OUTPUT_LEMMA)
-        root = tree.getroot()
+        iterable = ET.iterparse(self.OUTPUT_LEMMA)
+        event, root = next(iterable)
         NS = namespace_regex.match(root.tag)[0]
-        for page in root.findall(NS + "page"):
-            titulo = page.find(NS + "title").text
-            # These page entries are useless
-            iterator = (e for e in self.SKIP_TITLES if titulo.startswith(e))
-            if next(iterator, None):
-                continue
+        for event, elem in iterable:
+            if (elem.tag == NS + 'page'):
+                titulo = elem.find(NS + "title").text
+                # These page entries are useless
+                iterator = (e for e in self.SKIP_TITLES if titulo.startswith(e))
+                if next(iterator, None):
+                    continue
 
-            revision = page.find(NS + "revision")
-            contenido = revision.find(NS + "text")
-            result = self.__process_text(contenido.text, "es")
-            if result != []:
-                self.__results[titulo] = result
+                revision = elem.find(NS + "revision")
+                contenido = revision.find(NS + "text")
+                result = self.__process_text(contenido.text, "es")
+                if result != []:
+                    self.__results[titulo] = result
+
+                elem.clear()
 
     def __process_lang(self, text):
         results = []
@@ -258,7 +261,7 @@ class WikiParser(BaseParser):
     """
 
     def __export(self):
-        sys.stdout.write("Exporting lemmatizer files...")
+        sys.stdout.write("Exporting lemmatizer files...\n")
         dets_irreg = self.COMMON_EXCEPTIONS.get("det", {})
         content = {
             "type": "wiki",

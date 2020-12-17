@@ -4,7 +4,7 @@ setup(
     name='spacy_spanish_lemmatizer',
     packages=['spacy_spanish_lemmatizer'],
     include_package_data=True,
-    version='0.3',
+    version='0.5',
     license='MIT',
     description='Spanish rule-based lemmatization for spaCy',
     author='Pablo David Muñoz Sánchez',

@@ -2,6 +2,8 @@
 Spanish rule-based lemmatization for spaCy
 
 ## Steps to use lemmatizer
+* Ensure you have installed spaCy following the instructions given at https://spacy.io/usage.
+* Ensure you have installed spaCy Spanish model following the instructions given at https://spacy.io/usage/models.
 * Install package via pip
 ```pip install spacy_spanish_lemmatizer```
 * Generate lemmatization rules (it may take several minutes):
@@ -12,7 +14,7 @@ __NOTE__: currently, only lemmatization based on Wiktionary dump files is implem
 ```
 import spacy
 from spacy_spanish_lemmatizer import SpacyCustomLemmatizer
-
+# Change "es" to the Spanish model installed in step 2
 nlp = spacy.load("es")
 lemmatizer = SpacyCustomLemmatizer()
 nlp.add_pipe(lemmatizer, name="lemmatizer", after="tagger")

@@ -250,10 +250,17 @@ class WikiParser(BaseParser):
 
     def __resolve_derived_terms(self, dictionary):
         for key, value in dictionary.items():
+            visited = [value]
             next_value = dictionary.get(value, None)
-            while next_value and next_value != value:
+            while next_value:
+                if next_value in visited:
+                  # An endless loop has been detected
+                  value = min(visited, key=len)
+                  break
                 value = next_value
+                visited.append(value)
                 next_value = dictionary.get(next_value, None)
+
             dictionary[key] = value
 
     """

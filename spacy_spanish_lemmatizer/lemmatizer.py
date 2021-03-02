@@ -25,8 +25,9 @@ class Lemmatizer:
         for old, new in current_rules.items():
             if token.endswith(old):
                 return token[: len(token)-len(old)] + new
-        # Return original token if it is a preposition
-        if pos == "adp":
+        # Return the original token if it is a preposition or
+        # if the original lemmatizer has not been executed
+        if pos == "adp" or not old_lemma:
            return token
         # use lemma from spaCy
         return old_lemma.lower()

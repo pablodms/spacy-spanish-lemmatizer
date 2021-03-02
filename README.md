@@ -13,11 +13,10 @@ __NOTE__: currently, only lemmatization based on Wiktionary dump files is implem
 * Use it in Python:
 ```
 import spacy
-from spacy_spanish_lemmatizer import SpacyCustomLemmatizer
+import spacy_spanish_lemmatizer
 # Change "es" to the Spanish model installed in step 2
 nlp = spacy.load("es")
-lemmatizer = SpacyCustomLemmatizer()
-nlp.add_pipe(lemmatizer, name="lemmatizer", after="tagger")
+nlp.replace_pipe("lemmatizer", "spanish_lemmatizer")
 for token in nlp(
     """Con estos fines, la Dirección de Gestión y Control Financiero monitorea
        la posición de capital del Banco y utiliza los mecanismos para hacer un

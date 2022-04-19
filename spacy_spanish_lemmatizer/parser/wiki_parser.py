@@ -88,7 +88,8 @@ class WikiParser(BaseParser):
         urllib.request.urlretrieve(self.DUMP_URL, self.COMPRESSED_LEMMA)
 
     def __decompress_source(self):
-        sys.stdout.write("Decompressing dump file: " + self.COMPRESSED_LEMMA + "\n")
+        sys.stdout.write("Decompressing dump file: " +
+                         self.COMPRESSED_LEMMA + "\n")
         with open(self.OUTPUT_LEMMA, "wb") as new_file, bz2.BZ2File(
             self.COMPRESSED_LEMMA, "rb"
         ) as file:
@@ -110,17 +111,17 @@ class WikiParser(BaseParser):
         return []
 
     def __process_text(self, text, target_lang):
-
-        lengua_match = self.__lengua_regex.search(text)
-        if lengua_match:
-            return self.__iterate_languages(
-                text, self.__lengua_regex, target_lang
-            )
-        multiple_lang_match = self.__multiple_lang_regex.search(text)
-        if multiple_lang_match:
-            return self.__iterate_languages(
-                text, self.__multiple_lang_regex, target_lang
-            )
+        if text is not None:
+            lengua_match = self.__lengua_regex.search(text)
+            if lengua_match:
+                return self.__iterate_languages(
+                    text, self.__lengua_regex, target_lang
+                )
+            multiple_lang_match = self.__multiple_lang_regex.search(text)
+            if multiple_lang_match:
+                return self.__iterate_languages(
+                    text, self.__multiple_lang_regex, target_lang
+                )
         return []
 
     """
@@ -214,7 +215,8 @@ class WikiParser(BaseParser):
             if (elem.tag == NS + 'page'):
                 titulo = elem.find(NS + "title").text
                 # These page entries are useless
-                iterator = (e for e in self.SKIP_TITLES if titulo.startswith(e))
+                iterator = (
+                    e for e in self.SKIP_TITLES if titulo.startswith(e))
                 if next(iterator, None):
                     continue
 
@@ -254,9 +256,9 @@ class WikiParser(BaseParser):
             next_value = dictionary.get(value, None)
             while next_value:
                 if next_value in visited:
-                  # An endless loop has been detected
-                  value = min(visited, key=len)
-                  break
+                    # An endless loop has been detected
+                    value = min(visited, key=len)
+                    break
                 value = next_value
                 visited.append(value)
                 next_value = dictionary.get(next_value, None)
